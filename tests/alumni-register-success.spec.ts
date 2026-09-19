@@ -66,6 +66,8 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
 
   await expect(page.getByTestId('desk-qr-subject')).toContainText(testData.name_enrolled);
 
+  await page.getByTestId('desk-qr-link');
+
   await expect(page.getByTestId('scan-heading')).toContainText('ลงทะเบียนนักศึกษาเก่า สำหรับ'+testData.name_enrolled);
 
 
