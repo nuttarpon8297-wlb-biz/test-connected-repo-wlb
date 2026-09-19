@@ -68,6 +68,7 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
 
   await page.getByTestId('desk-qr-link').click();
 
+  await expect(page.getByTestId('scan-heading')).toBeVisible();
   await expect(page.getByTestId('scan-heading')).toContainText('ลงทะเบียนนักศึกษาเก่า สำหรับ'+testData.name_enrolled);
 
 
