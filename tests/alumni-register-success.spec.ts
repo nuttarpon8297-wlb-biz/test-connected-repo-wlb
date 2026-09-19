@@ -10,7 +10,8 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
   level_university: 'ปริญญาตรี',
   faculties: 'คณะมนุษยศาสตร์',
   user_status: 'rejected',
-  password_unlock_masking: 'CMU123456'
+  password_unlock_masking: 'CMU123456',
+  email: 'banklnwza@gmail.com'
   }
 
   await page.goto('https://alumni.sck.co.th/login');
@@ -78,5 +79,15 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
   await scanPage.getByTestId('scan-consent-accepted').click();
   await scanPage.getByTestId('scan-publicity-accepted').click();
   await scanPage.getByTestId('scan-next').click();
+
+  await scanPage.getByTestId('short-form-email').fill(testData.email);
+  await scanPage.getByTestId('short-form-email').fill(testData.password_unlock_masking);
+  await scanPage.getByTestId('short-form-submit').click();
+
+  await expect(scanPage.getByTestId('scan-done-heading')).toContainText('ส่งคำขอลงทะเบียนแล้ว')
+
+  
+
+
 
 });
