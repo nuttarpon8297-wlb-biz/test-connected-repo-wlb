@@ -86,7 +86,18 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
 
   await expect(scanPage.getByTestId('scan-done-heading')).toContainText('ส่งคำขอลงทะเบียนแล้ว')
 
-  
+  // Tear Down for Repeatability
+
+  await page.goto('https://alumni.sck.co.th/admin/approvals');
+
+  await expect(page.getByRole('row', { name: '560110201' })).toContainText('ปวีณา ใจแก้ว');
+  const row = page.getByRole('row', { name: testData.student_id });
+  await expect(row).toContainText(testData.name_enrolled);
+  await row.getByTestId('reject-button').click();
+
+
+
+
 
 
 
