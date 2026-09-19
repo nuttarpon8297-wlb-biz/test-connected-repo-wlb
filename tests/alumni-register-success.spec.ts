@@ -77,5 +77,6 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
 
   await scanPage.getByTestId('scan-consent-accepted').click();
   await scanPage.getByTestId('scan-publicity-accepted').click();
+  await scanPage.getByTestId('scan-next').click();
 
 });
