@@ -62,11 +62,12 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
   await expect(page.getByTestId('account-status')).toContainText(testData.user_status);
 
   await expect(page.getByTestId('issue-qr-button')).toBeVisible();
-  await page.getByTestId('issue-qr-button').click();
-
   await expect(page.getByTestId('desk-qr-subject')).toContainText(testData.name_enrolled);
 
-  await page.getByTestId('desk-qr-link');
+  await page.getByTestId('issue-qr-button').click();
+
+
+  await page.getByTestId('desk-qr-link').click();
 
   await expect(page.getByTestId('scan-heading')).toContainText('ลงทะเบียนนักศึกษาเก่า สำหรับ'+testData.name_enrolled);
 
