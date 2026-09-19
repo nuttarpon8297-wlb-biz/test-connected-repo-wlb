@@ -62,6 +62,10 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
   await expect(page.getByTestId('account-status')).toContainText(testData.user_status);
 
   await expect(page.getByTestId('issue-qr-button')).toBeVisible();
+  await page.getByTestId('issue-qr-button').click();
 
-  // await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  await expect(page.getByTestId('desk-qr-subject')).toContainText(testData.name_enrolled);
+
+  
+
 });
