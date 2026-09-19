@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test';
 
 test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page }) => {
+  
+  const testData = {
+  student_id: '2601007',
+  name_enrolled: 'สุภาวดี อินทร์คำ',
+  masking_identity_value: 'XXXXXXXXX4867',
+  identity_value: '7770921604867',
+  level_university: 'ปริญญาตรี',
+  faculties: 'คณะมนุษยศาสตร์',
+  user_status: 'rejected',
+  password_unlock_masking: 'CMU123456'
+  }
+
   await page.goto('https://alumni.sck.co.th/login');
 
   // await page.getByRole('link', { name: 'เจ้าหน้าที่มหาวิทยาลัยเข้าสู่ระบบ' }).click();
@@ -16,18 +28,6 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
   // await page.locator('xpath=//button').click();
 
   await expect(page.getByTestId('admin-dashboard-title')).toContainText('Central Admin Dashboard');
-
-  const testData = {
-  student_id: '2601007',
-  name_enrolled: 'สุภาวดี อินทร์คำ',
-  masking_identity_value: 'XXXXXXXXX4867',
-  identity_value: '7770921604867',
-  level_university: 'ปริญญาตรี',
-  faculties: 'คณะมนุษยศาสตร์',
-  user_status: 'rejected',
-  password_unlock_masking: 'CMU123456'
-
-}
 
   await page.getByTestId('desktop-admin-nav-road-shows').click();
   await page.getByRole('row', { name: 'CMU Reuninon เชียงราย' }).getByTestId('open-desk-button').click();
@@ -66,14 +66,16 @@ test('เข้าหน้าเว็ปไซต์ Alumni', async ({ page })
   await page.getByTestId('issue-qr-button').click();
     await expect(page.getByTestId('desk-qr-subject')).toContainText(testData.name_enrolled);
 
+  // ลิงก์เป็น target="_blank" rel="noopener" -> ไม่ยิง event 'popup' ต้องดัก 'page' ที่ context
+  // ตั้ง promise รอไว้ก่อนคลิก แล้วค่อย await หลังคลิก
+  const scanPagePromise = page.context().waitForEvent('page');
   await page.getByTestId('desk-qr-link').click();
+  const scanPage = await scanPagePromise;
+  await scanPage.waitForLoadState();
 
-  // await expect(page.getByTestId('scan-heading')).toBeVisible();
-  // await expect(page.getByTestId('scan-heading')).toContainText('ลงทะเบียนนักศึกษาเก่า สำหรับ'+testData.name_enrolled);
-  await expect(page.getByTestId('scan-heading')).toContainText('ลงทะเบียนนักศึกษาเก่า สำหรับสุภาวดี อินทร์คำ');
-  // await expect(page.locator('//*[@id="app"]/main/div/div[2]/header/h1')).toContainText('ลงทะเบียนนักศึกษาเก่า สำหรับสุภาวดี อินทร์คำ');
+  await expect(scanPage.getByTestId('scan-heading')).toContainText('ลงทะเบียนนักศึกษาเก่า สำหรับ' + testData.name_enrolled);
 
-  await page.getByTestId('scan-consent-accepted').click();
-  await page.getByTestId('scan-publicity-accepted').click();
+  await scanPage.getByTestId('scan-consent-accepted').click();
+  await scanPage.getByTestId('scan-publicity-accepted').click();
 
 });
